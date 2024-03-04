@@ -80,6 +80,11 @@
     docker
     cloc
     gh
+    gnumake
+    unzip
+    gcc
+    elixir
+    ripgrep
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
