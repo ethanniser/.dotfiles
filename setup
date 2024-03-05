@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Function to create backup
+create_backup() {
+    if [ -e "$1" ]; then
+        echo "Creating backup of $1 as ${1}.bak"
+        cp -r "$1" "${1}.bak"
+    fi
+}
+
+# Check for -f flag to skip backups
+FORCE=false
+while getopts "f" opt; do
+  case ${opt} in
+    f )
+      FORCE=true
+      ;;
+    \? )
+      echo "Usage: cmd [-f]"
+      exit 1
+      ;;
+  esac
+done
+
+# Prompt for backup if -f is not passed
+if [ "$FORCE" = false ]; then
+    read -p "Do you want to create backups? [y/N] " response
+    case "$response" in
+        [yY][eE][sS]|[yY] )
+            BACKUP=true
+            ;;
+        * )
+            BACKUP=false
+            ;;
+    esac
+else
+    BACKUP=false
+fi
+
+# Associative array to manage source-destination pairs
+declare -A links=(
+    ["./configuration.nix"]="/etc/nixos/configuration.nix"
+    ["./nvim"]="$HOME/.config/nvim"
+    # Add more configurations here
+)
+
+# Loop through all source-destination pairs
+for src in "${!links[@]}"; do
+    dst="${links[$src]}"
+    echo "Processing: $src -> $dst"
+
+    # Create backup if required
+    if [ "$BACKUP" = true ]; then
+        create_backup "$dst"
+    fi
+
+    # Create symlink, forcing overwrite with -fn
+    ln -sfn "$(pwd)/$src" "$dst"
+    echo "Symlinked $src to $dst"
+done
