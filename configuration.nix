@@ -88,6 +88,7 @@
     lua
     prettierd
     stylua
+    tree-sitter
   ];
 
 
