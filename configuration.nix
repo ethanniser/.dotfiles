@@ -87,6 +87,7 @@
     ripgrep
     lua
     prettierd
+    nerdfonts
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
