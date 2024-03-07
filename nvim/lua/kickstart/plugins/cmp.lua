@@ -5,6 +5,8 @@ return {
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       {
+        -- nvim-cmp source for neovim lua api (vim.keymap.set etc)
+        'hrsh7th/cmp-nvim-lua',
         'L3MON4D3/LuaSnip',
         build = (function()
           -- Build Step is needed for regex support in snippets
@@ -85,6 +87,7 @@ return {
           end, { 'i', 's' }),
         },
         sources = {
+          { name = 'nvim_lua' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
