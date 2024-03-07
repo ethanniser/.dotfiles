@@ -87,6 +87,7 @@
     ripgrep
     lua
     prettierd
+    stylua
   ];
 
 
