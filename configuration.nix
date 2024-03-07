@@ -87,7 +87,11 @@
     ripgrep
     lua
     prettierd
-    nerdfonts
+  ];
+
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "FiraCode" "Hack" ]; })
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
