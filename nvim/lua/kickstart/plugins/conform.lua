@@ -3,9 +3,9 @@ return {
     'stevearc/conform.nvim',
     opts = {
       notify_on_error = false,
-      format_on_save = function(bunfr)
+      format_on_save = function(bufnr)
         -- disabled with a global or buffer-local variable
-        if vim.g.disable_autoformat or vim.b[bunfr].disable_autoformat then
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
           return
         end
 
