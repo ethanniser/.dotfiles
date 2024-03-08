@@ -111,7 +111,11 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  services.postgresql.enable = true;
+  # services.postgresql.enable = true;
+  services.postgresql = {
+    enable = true;
+    extraPlugins = with pkgs.postgresql_15.pkgs; [ pgvector ];  
+  };
   virtualisation.docker.enable = true;
 
   # Open ports in the firewall.
