@@ -89,6 +89,7 @@
     prettierd
     stylua
     tree-sitter
+    docker
   ];
 
 
