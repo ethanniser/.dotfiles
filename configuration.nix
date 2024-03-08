@@ -89,7 +89,8 @@
     prettierd
     stylua
     tree-sitter
-    postgresql
+    postgresql_15
+    postgresql15Packages.pgvector
   ];
 
 
