@@ -91,6 +91,7 @@
     tree-sitter
     postgresql_15
     postgresql15Packages.pgvector
+    htop
   ];
 
 
