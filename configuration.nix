@@ -4,6 +4,9 @@
 
 { config, lib, pkgs, ... }:
 
+let
+  postgresHttpProxyPort = 3000;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -59,10 +62,18 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  users.groups.postgresHttpProxy = {};
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ethan = {
     isNormalUser = true;
     extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
+  };
+
+  users.users.postgresHttpProxy = {
+    isSystemUser = true;
+    createHome = false;
+    group = "postgresHttpProxy";
   };
 
   # List packages installed in system profile. To search, run:
@@ -119,8 +130,22 @@
   };
   virtualisation.docker.enable = true;
 
+  # http proxy server
+  systemd.services.postgresHttpProxy = {
+    enable = true;
+    after = [ "network.target" "postgresql.service" "local-fs.target" ];
+    requires = [ "postgresql.service" ];
+    serviceConfig = {
+      Restart = "always";
+      User = "postgresHttpProxy";
+      Environment = "PORT=${toString postgresHttpProxyPort}";
+      WorkingDirectory = "/usr/local/postgresHttpProxy";
+      ExecStart = "${pkgs.bun}/bin/bun index.ts";
+    };
+  };
+
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 5432 postgresHttpProxyPort ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
